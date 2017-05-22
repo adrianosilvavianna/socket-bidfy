@@ -72,7 +72,10 @@ $(function() {
   
   //ADDED LATER AA@MI[5/19/2017]
   function bid (c) {
-    var message =  parseInt(c) + parseInt($('.show:last-child').find('.messageBody').text());
+    var now = moment().format("DD-M-YYYY, h:mm:ss SSS a");
+    // var htmlDateTime =  $.parseHTML(' <i>'+now+'<i>');
+    // var message =  parseInt(c) + parseInt($('.show:last-child').find('.messageBody').text()) + htmlDateTime;
+    var message =  parseInt(c) + parseInt($('.show:last-child').find('.messageBody').text()) + ' ['+now+']';
     // Prevent markup from being injected into the message
     message = cleanInput(message);
     // if there is a non-empty message and a socket connection

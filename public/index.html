@@ -6,11 +6,11 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-        <div class="getTime" style="display:none;"></div>
+  <div class="getTime" style="display:none;"></div>
   <div class="time" style="display:none;">02</div>
   <ul class="pages">
     <li class="chat page">
-      <div class="timer">Time left = <span id="timer">00:00</span></div>
+      <div class="timer">Time left = <span id="timer" style="color:red;">00:00</span> (Initial Bid Amt : <span class="init-bid" data-init-bid="99">99</span>)</div>
       <div id="logs"></div>
       <div id="options">
       </div>
@@ -504,24 +504,28 @@
       <div id="buttons" class="btns">
       <p style="text-align: center;" >To Bid on the current item, please hit the numbers from num pad.</p>
         <p>
+        <span>99</span>
+        <button class="bid-btns">0</button>
+        </p>
+        <p>
           <span>100</span>
-          <button>1</button>
+        <button class="bid-btns">1</button>
         </p>
         <p>
         <span>200</span>
-        <button>2</button>
+        <button class="bid-btns">2</button>
         </p>
         <p>
         <span>300</span>
-        <button>3</button>
+        <button class="bid-btns">3</button>
         </p>
         <p>
         <span>400</span>
-        <button>4</button>
+        <button class="bid-btns">4</button>
         </p>
         <p>
         <span>500</span>
-        <button>5</button>
+        <button class="bid-btns">5</button>
         </p>
       </div>
     </li>

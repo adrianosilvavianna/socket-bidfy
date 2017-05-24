@@ -38,6 +38,14 @@ io.on('connection', function (socket) {
     });
   });
 
+  // when the client emits 'strike initial bid price', this listens and executes
+  socket.on('strike initial bid price', function (data) {
+    // we tell the client to execute 'new message'
+    socket.broadcast.emit('strike initial bid price', {
+      me: data
+    });
+  });
+
   // when the client emits 'add user', this listens and executes
   socket.on('add user', function (username) {
     if (addedUser) return;

@@ -1,25 +1,25 @@
+# live_auction
+demo live auction built with node.js
 
-# Socket.IO Chat
-
-A simple chat demo for socket.io
+A simple demo for socket.io
 
 ## How to use
 
 ```
 $ cd socket.io
 $ npm install
-$ cd examples/chat
+$ cd live_auction
 $ npm install
 $ npm start
 ```
 
-And point your browser to `http://localhost:3000`. Optionally, specify
+And point your browser to `http://localhost:8080`. Optionally, specify
 a port by supplying the `PORT` env variable.
 
 ## Features
 
-- Multiple users can join a chat room by each entering a unique username
+- Multiple bidders can join the auction by each entering a unique username
 on website load.
-- Users can type chat messages to the chat room.
-- A notification is sent to all users when a user joins or leaves
-the chatroom.
+- Bidders can bid to auction using num pad keys.
+- A notification is sent to all bidders when a bidder joins or leaves
+the acution.

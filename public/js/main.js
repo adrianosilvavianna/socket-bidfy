@@ -275,6 +275,13 @@ $(function() {
   // });
 
   $window.keypress(function(k) {
+      //AA@MI [disable num pad 0 if bidders have already bidded the initial price]
+      if($('.bid-btns:contains(0)').prop('disabled') == true){
+        if(k.keyCode == 48){
+          return false;
+        }
+      }
+
       switch(k.keyCode)
       {
           // user presses the "0"

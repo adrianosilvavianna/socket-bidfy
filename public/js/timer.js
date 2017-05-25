@@ -83,12 +83,13 @@
 		set = setInterval(function(){
 			$('.time').trigger('click');
 			clearInterval(set);
-		},20000);
+		},100);
 		//AA[clear interval once broadcasted]
 
 		$('.time').on('click', function(e) {
 			e.stopPropagation();
-			var time = $(this).text() * 60 * 1000;
+			//var time = $(this).text() * 60 * 1000;
+			var time = $(this).text() * 1000;
 			timer.setEndTime(time);
 			timer.timeRemaining();
 			socket.emit('setTimer', { time: time });
@@ -99,6 +100,13 @@
 		if (timer.timeLeft > 0) {
 			timer.timeRemaining();
 			$('#timer').text(timer.format());
+			if($('#timer').text()=='0-1:00'){
+				$( "#buttons" ).fadeIn( 1000, function() {
+				  $( ".bid-btns" ).fadeIn( 100 );
+				});
+				$('.bid-btns').prop('disabled',false);
+			}
+
 		}
 	},100);
 

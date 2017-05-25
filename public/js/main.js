@@ -11,6 +11,8 @@ $(function() {
   var $window = $(window);
   var $usernameInput = $('.usernameInput'); // Input for username
   var $messages = $('.messages'); // Messages area
+  var $rightLogMsg = $('.right .logs'); //User Logs
+  var $allBidLogs = $('.all-bid-logs');
   var $inputMessage = $('.inputMessage'); // Input message input box
 
   var $loginPage = $('.login.page'); // The login page
@@ -85,7 +87,7 @@ $(function() {
 
   // Log a message
   function log (message, options) {
-    var $el = $('#logs').addClass('log').text(message);
+    var $el = $('<li>').addClass('log').text(message);
     addBiddingElements($el, options);
   }
 
@@ -111,7 +113,7 @@ $(function() {
       .addClass(biddingClass)
       .append($usernameDiv, $messageBodyDiv);
 
-    addBiddingElements($messageDiv, options);
+    addBiddingElements($messageDiv, options,data);
   }
 
   // Adds the visual chat bidding message
@@ -133,7 +135,8 @@ $(function() {
   // options.fade - If the element should fade-in (default = true)
   // options.prepend - If the element should prepend
   //   all other messages (default = false)
-  function addBiddingElements (el, options) {
+  function addBiddingElements (el, options, data) {
+ 
     var $el = $(el);
 
     // Setup default options
@@ -151,11 +154,34 @@ $(function() {
     if (options.fade) {
       $el.hide().fadeIn(FADE_TIME);
     }
-    if (options.prepend) {
-      $messages.prepend($el);
-    } else {
+    if(el.hasClass('message')){
       $messages.append($el);
+
+      //for right col
+      var $usernameDiv = $('<span class="username"/>')
+        .text(data.username)
+        .css('color', getUsernameColor(data.username));
+      var $messageBodyDiv = $('<span class="messageBody">')
+        .text(data.message);
+
+      var biddingClass = data.bidding ? 'bidding' : '';
+      var $messageDiv = $('<li class="message"/>')
+        .data('username', data.username)
+        .addClass(biddingClass)
+        .append($usernameDiv, $messageBodyDiv);
+
+      $allBidLogs.prepend($messageDiv);
+    }else{
+      $rightLogMsg.append($el);
     }
+    // if (options.prepend == false) {
+    //   console.log($el);
+    //   $messages.prepend($el);
+    // } else {
+    //   console.log($el);
+    //   $rightLogMsg.append($el);
+    // }
+    
     //AA@MI [ADDED[dipslay only 2 bidders at a time]]
     $(".messages").each(function(){
          //$(this).find("li:lt(3)").show();
@@ -163,8 +189,8 @@ $(function() {
          $(this).find('li').removeClass('show');
          $(this).find('li:last-child').prev('li').andSelf().show();
          $(this).find('li:last-child').prev('li').andSelf().addClass('show');
-         $(this).find('li').not('.show').hide();  
-         //$(this).find('li').not('.show').remove();  
+         //$(this).find('li').not('.show').hide();  
+         $(this).find('li').not('.show').remove();  
       });
 
     $messages[0].scrollTop = $messages[0].scrollHeight;
@@ -261,7 +287,7 @@ $(function() {
     // When the client hits ENTER on their keyboard
     if (event.which === 13) {
       if (username) {
-        sendMessage();
+        //sendMessage();
         socket.emit('stop bidding');
         bidding = false;
       } else {
@@ -274,7 +300,12 @@ $(function() {
   //   updateBidding();
   // });
 
-  $window.keypress(function(k) {
+      $window.keypress(function(k) {
+
+      if($('.bid-btns').eq(1).prop('disabled') === true){
+        if(k.keyCode == 48 || k.keyCode == 49 || k.keyCode == 50 || k.keyCode == 51 || k.keyCode == 52 || k.keyCode == 53)
+        return false;
+      }
       //AA@MI [disable num pad 0 if bidders have already bidded the initial price]
       if($('.bid-btns:contains(0)').prop('disabled') == true){
         if(k.keyCode == 48){
@@ -308,7 +339,7 @@ $(function() {
           case 53:  bid(500); updateBidding(); disableInitBidAmt(500); 
           break;
       }
-  });
+      });
 
   // Click events
 

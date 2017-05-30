@@ -99,7 +99,7 @@ th, td {
 /* Chat page */
 div.chat.page {
 	display: none;
-	padding: 40px 0 0 0;
+	padding: 70px 0 0 0;
 }
 
 /* Font */
@@ -119,7 +119,7 @@ div.chat.page {
 /* Messages */
 .chatArea {
 	height: 100%;
-	padding: 30px 0 105px 0px;
+	padding: 0px 0 105px 0px;
 }
 /*.messages {
 	height: 120px;
@@ -139,7 +139,7 @@ div.chat.page {
 }
 
 .messages li {
-	padding: 3px;
+	padding: 5px 10px;
 	width: 100%;
 	float: left;
 }
@@ -286,4 +286,10 @@ div.itemDesc {
     padding: 15px 0 5px;
     font-size: 20px;
     font-weight: bold;
+    position: fixed;
+    width: 100%;
+}
+.knob.second{
+	height: 15px !important;
+	margin-top: 8px !important;
 }

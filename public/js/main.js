@@ -78,6 +78,7 @@ $(function($) {
 
     //var message =  parseInt(c) + parseInt($('.show:last-child').find('.messageBody').text()) + ' ['+now+']';
     var message =  init_bid_condition + bid_amt_condition + ' ['+now+']';
+    var bid_sold_at = init_bid_condition + bid_amt_condition;
     //remove initial bid amt from data on first bid
     $('.init-bid').data('init-bid',0);
     // Prevent markup from being injected into the message
@@ -87,18 +88,21 @@ $(function($) {
       $inputMessage.val('');
       addBids({
         username: username,
-        message: message
+        message: message,
+        bid_sold_at : bid_sold_at
       });
 
       // tell server to execute 'new message' and send along one parameter
-      socket.emit('new message', message);
+      socket.emit('new message', {message,bid_sold_at});
     }
   }
 
   //AADED
   function countdown($el,data) {
+
       var seconds = BIDDER_TIMER_LIMIT;
-      var username = data ? data.username : '';
+      var username = data ? data.username : 'error';
+      var bidAmt = data ? data.bid_sold_at : 'error';
       function tick() {
          var $s = $('#time');
           seconds--;
@@ -108,9 +112,9 @@ $(function($) {
                 tick();
               }, 1000);
           } else {
-            $('#container').html('<p class="text-center">Sold To '+username+'</p>');
+            $('#container').html('<p class="text-center">Sold To '+username+' @ ' +bidAmt+ '</p>');
             $('.all-bid-logs').find('li:first-child').append('[ SOLD ]');
-            $('.all-bid-logs').find('li:first-child').css('background-color','yellow');
+            $('.all-bid-logs').find('li:first-child').css({'background-color':'yellow', 'font-weight': 'bold'});
             $('.bid-btns').prop('disabled',true);
           }
       }

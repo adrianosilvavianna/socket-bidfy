@@ -132,14 +132,16 @@ div.chat.page {
 .messages {
     height: 120px;
     margin-left: 50px;
-    width: 80%;
+    width: 100%;
     float: left;
     padding-left: 0;
     background: #f7f7f7;
 }
 
 .messages li {
-	text-align: center;
+	padding: 3px;
+	width: 100%;
+	float: left;
 }
 .message.typing .messageBody {
 	color: gray;
@@ -215,12 +217,13 @@ div.itemImg {
 }
 div.itemDesc {
 	height: 100px;
+	overflow-y: scroll;
 	z-index: 1;
 	float: left;
 	width: 100%;
 	text-align: center;
 	padding-right: 25px;
-	overflow: hidden;
+	/*overflow: hidden;*/
 }
 .current-bidding-price {
 	float: left;
@@ -256,8 +259,10 @@ div.itemDesc {
 	width: 80%;
 	float: right;
 	height: auto;
+	font-size: 16px;
+	padding: 5px;
+	/*font-weight: bold;*/
 }
-
 .logs {
 	height: 200px;
 	margin: 0;
@@ -270,4 +275,15 @@ div.itemDesc {
 	width: 63%;
 	float: right;
 	height: auto;
+}
+#clientTimer {
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 5px;
+}
+.text-center {
+	text-align: center;
+    padding: 15px 0 5px;
+    font-size: 20px;
+    font-weight: bold;
 }

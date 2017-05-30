@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="http://jquery-custom-scrollbar.rocketmind.pl/jquery.custom-scrollbar.css">
 </head>
 <body>
+<div id="container"></div>
 	<div class="login page">
 		<div class="form">
 			<h3 class="title">Enter Your Name To Start Bidding!</h3>
@@ -97,14 +98,18 @@
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-	<script src="/js/moment.min.js"></script>
-	<script src="/socket.io/socket.io.js"></script>
-	<script src="/js/main.js"></script>
+  <script src="/js/moment.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+<!--   <script src="/js/bundle.js"></script> -->
+  <script src="/js/lib/jquery.knob.min.js"></script>
+  <script src="/js/main.js"></script>
   <script src="/js/timer.js"></script>
+
 	<!-- <script src="http://jquery-custom-scrollbar.rocketmind.pl/jquery.custom-scrollbar.js"></script> -->
 	<script type="text/javascript">
 
 		$(document).ready(function(){
+
        // $(".all-bidders-log").customScrollbar({
        //    updateOnWindowResize: true
        // });

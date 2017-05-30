@@ -14,15 +14,11 @@ server.listen(port, function () {
 // Routing
 app.use(express.static(__dirname + '/public'));
 
-// Chatroom
-
+// number of users
 var numUsers = 0;
 
 io.on('connection', function (socket) {
   var addedUser = false;
-
-  //added later [sset timer for buyers]
-  socket.emit('currentEndTime', {time: timer.getEndTime() });
   
   socket.on('setTimer', function(data) {
     timer.setEndTime(data.time);

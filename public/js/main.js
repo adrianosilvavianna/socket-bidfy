@@ -8,7 +8,7 @@ $(function($) {
     '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
   ];
   //KNOB CONFIGURATIONS
-  var BIDDER_TIMER_LIMIT = 10; // s
+  var BIDDER_TIMER_LIMIT = 30; // TEMPO REGRESSIVO
   var DIAL_HEIGHT = 30;
   var DIAL_WIDTH  = 30;
   var DIAL_THICKNESS  = .1;
@@ -74,6 +74,8 @@ $(function($) {
     var init_bid_amt = parseInt($('.init-bid').text(),10);
     var data_init_bid_amt = $('.init-bid').data('init-bid');
     var latest_bid_amt = parseInt($('.show:last-child').find('.messageBody').text(),10);
+
+    // acontece a soma dos valores de cada lance
     var bid_amt_condition = data_init_bid_amt == 99 ? init_bid_amt : latest_bid_amt;
 
     //var message =  parseInt(c) + parseInt($('.show:last-child').find('.messageBody').text()) + ' ['+now+']';
@@ -100,9 +102,9 @@ $(function($) {
   //AADED
   function countdown($el,data) {
 
-      var seconds = BIDDER_TIMER_LIMIT;
-      var username = data ? data.username : 'error';
-      var bidAmt = data ? data.bid_sold_at : 'error';
+      var seconds = BIDDER_TIMER_LIMIT; //tempo em segundos
+      var username = data ? data.username : 'error'; // nome usuario
+      var bidAmt = data ? data.bid_sold_at : 'error'; // valor total
       function tick() {
          var $s = $('#time');
           seconds--;
@@ -128,6 +130,7 @@ $(function($) {
   }
 
   // Adds the visual chat message to the message list
+  // aqui entra a chamada Soquet para o SQL registrando o usuário e seu lance e o LEILÃO
   function addBids (data, options) {
     // Don't fade the message in if there is an 'X was bidding'
     var $biddingMessages = getBiddings(data);
@@ -454,7 +457,10 @@ $(function($) {
   $btns.click(function(){
     var me = $(this);
     var bid_value = me.prev('span').text();
+    console.log('bid - value ', bid_value);
     bid(bid_value);
+
+    console.log('bid', bid(bid_value) );
     //disable click for yourself / strike through initial bid amount 
     disableInitBidAmt(bid_value);
   });

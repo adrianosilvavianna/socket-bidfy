@@ -102,7 +102,7 @@
 			$('#timer').text(timer.format());
 			if($('#timer').text()=='0-1:00'){
 				$( "#buttons" ).fadeIn( 1000, function() {
-				  $( ".bid-btns" ).fadeIn( 100 );
+				  $( ".bid-btns" ).fadeIn( 100 ); //tempo para aparecer os botoes
 				});
 				$('.bid-btns').prop('disabled',false);
 			}

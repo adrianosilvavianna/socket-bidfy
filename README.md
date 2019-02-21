@@ -37,3 +37,6 @@ the acution.
 
 ## DEMO LINK
 https://cryptic-island-75395.herokuapp.com/
+
+## UPDATED FILES ARE NOW AVAILABLE
+https://aryaitandmedia.com/blog/download/live-auction/

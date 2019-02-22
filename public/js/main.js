@@ -61,6 +61,7 @@ $(function($) {
       $currentInput = $inputMessage.focus();
 
       // Tell the server your username
+      // evento para add o nome do user
       socket.emit('add user', username);
     }
   }
@@ -68,19 +69,20 @@ $(function($) {
   //ADDED LATER AA@MI[5/19/2017]
   function bid (c) {
 
-    var now = moment().format("DD-M-YYYY, h:mm:ss SSS a");
-    var init_bid_condition = parseInt(c) == 99 ? 0 : parseInt(c);
+    var now = moment().format("DD/M/YYYY, h:mm:ss SSS a");
+    var init_bid_condition = parseInt(c);
 
     var init_bid_amt = parseInt($('.init-bid').text(),10);
     var data_init_bid_amt = $('.init-bid').data('init-bid');
-    var latest_bid_amt = parseInt($('.show:last-child').find('.messageBody').text(),10);
+    var latest_bid_amt = parseInt($('.show:last-child').find('.messageBidSold').text(),10); //pega o ultimo registro
 
     // acontece a soma dos valores de cada lance
-    var bid_amt_condition = data_init_bid_amt == 99 ? init_bid_amt : latest_bid_amt;
+    var bid_amt_condition = latest_bid_amt ? latest_bid_amt : 0;
+    var bid_sold_at = init_bid_condition + bid_amt_condition; // valor sólido (inteiro dos )
 
     //var message =  parseInt(c) + parseInt($('.show:last-child').find('.messageBody').text()) + ' ['+now+']';
-    var message =  init_bid_condition + bid_amt_condition + ' ['+now+']';
-    var bid_sold_at = init_bid_condition + bid_amt_condition;
+    var message =  (bid_sold_at/100) + ' ['+now+']'; // emite a msg para o usuário
+    
     //remove initial bid amt from data on first bid
     $('.init-bid').data('init-bid',0);
     // Prevent markup from being injected into the message
@@ -88,6 +90,7 @@ $(function($) {
     // if there is a non-empty message and a socket connection
     if (message && connected) {
       $inputMessage.val('');
+      // metodo que organiza as msgs que vao para tela
       addBids({
         username: username,
         message: message,
@@ -105,6 +108,7 @@ $(function($) {
       var seconds = BIDDER_TIMER_LIMIT; //tempo em segundos
       var username = data ? data.username : 'error'; // nome usuario
       var bidAmt = data ? data.bid_sold_at : 'error'; // valor total
+
       function tick() {
          var $s = $('#time');
           seconds--;
@@ -115,7 +119,7 @@ $(function($) {
               }, 1000);
           } else {
             $('#container').html('<p class="text-center">Sold To '+username+' @ ' +bidAmt+ '</p>');
-            $('.all-bid-logs').find('li:first-child').append('[ SOLD ]');
+            $('.all-bid-logs').find('li:first-child').append('[ WIN ]');
             $('.all-bid-logs').find('li:first-child').css({'background-color':'yellow', 'font-weight': 'bold'});
             $('.bid-btns').prop('disabled',true);
           }
@@ -130,7 +134,6 @@ $(function($) {
   }
 
   // Adds the visual chat message to the message list
-  // aqui entra a chamada Soquet para o SQL registrando o usuário e seu lance e o LEILÃO
   function addBids (data, options) {
     // Don't fade the message in if there is an 'X was bidding'
     var $biddingMessages = getBiddings(data);
@@ -144,13 +147,15 @@ $(function($) {
       .text(data.username)
       .css('color', getUsernameColor(data.username));
     var $messageBodyDiv = $('<span class="messageBody">')
-      .text(data.message);
+      .text(data.message);      
+    var $messageBidSold = $('<span class="messageBidSold" style="display: none">')
+      .text(data.bid_sold_at);
 
     var biddingClass = data.bidding ? 'bidding' : '';
     var $messageDiv = $('<li class="message"/>')
       .data('username', data.username)
       .addClass(biddingClass)
-      .append($usernameDiv, $messageBodyDiv);
+      .append($usernameDiv, $messageBodyDiv, $messageBidSold);
 
     addBiddingElements($messageDiv, options,data);
     addBidTimer($messageDiv,data);
@@ -416,28 +421,28 @@ $(function($) {
       switch(k.keyCode)
       {
           // user presses the "0"
-          case 48:  bid(99); updateBidding(); disableInitBidAmt(99);
+          case 48:  bid(1); updateBidding(); disableInitBidAmt(1);
           break;
 
           // user presses the "1"
-          case 49:  bid(100); updateBidding(); disableInitBidAmt(100);
-          break;
+          // case 49:  bid(100); updateBidding(); disableInitBidAmt(100);
+          // break;
               
           // user presses the "2"
-          case 50:  bid(200); updateBidding(); disableInitBidAmt(200);
-          break;
+          // case 50:  bid(200); updateBidding(); disableInitBidAmt(200);
+          // break;
           
           // user presses the "3"
-          case 51:  bid(300); updateBidding(); disableInitBidAmt(300);
-          break;
+          // case 51:  bid(300); updateBidding(); disableInitBidAmt(300);
+          // break;
           
           // user presses the "4"
-          case 52:  bid(400); updateBidding(); disableInitBidAmt(400);
-          break;
+          // case 52:  bid(400); updateBidding(); disableInitBidAmt(400);
+          // break;
           
           // user presses the "5"
-          case 53:  bid(500); updateBidding(); disableInitBidAmt(500); 
-          break;
+          // case 53:  bid(500); updateBidding(); disableInitBidAmt(500); 
+          // break;
       }
       });
 
@@ -458,9 +463,9 @@ $(function($) {
     var me = $(this);
     var bid_value = me.prev('span').text();
     console.log('bid - value ', bid_value);
-    bid(bid_value);
+    // bid(bid_value);
+    bid(1);
 
-    console.log('bid', bid(bid_value) );
     //disable click for yourself / strike through initial bid amount 
     disableInitBidAmt(bid_value);
   });

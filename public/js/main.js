@@ -8,7 +8,7 @@ $(function($) {
     '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
   ];
   //KNOB CONFIGURATIONS
-  var BIDDER_TIMER_LIMIT = 30; // TEMPO REGRESSIVO
+  var BIDDER_TIMER_LIMIT = 15; // TEMPO REGRESSIVO
   var DIAL_HEIGHT = 30;
   var DIAL_WIDTH  = 30;
   var DIAL_THICKNESS  = .1;
@@ -16,6 +16,7 @@ $(function($) {
   // Initialize variables
   var $window = $(window);
   var setTimeOut;
+  var oldUserName = '';
   var $usernameInput = $('.usernameInput'); // Input for username
   var $messages = $('.messages'); // Messages area
   var $rightLogMsg = $('.right .logs'); //User Logs
@@ -90,6 +91,7 @@ $(function($) {
     // if there is a non-empty message and a socket connection
     if (message && connected) {
       $inputMessage.val('');
+
       // metodo que organiza as msgs que vao para tela
       addBids({
         username: username,
@@ -97,8 +99,11 @@ $(function($) {
         bid_sold_at : bid_sold_at
       });
 
+      oldUserName = username;
+
       // tell server to execute 'new message' and send along one parameter
       socket.emit('new message', {message,bid_sold_at});
+      
     }
   }
 
@@ -309,14 +314,32 @@ $(function($) {
   }
 
   function strikeInitialBid (bid_value){
-   $('p span:contains(99)').next().prop('disabled',true);
-   $('p span:contains(99)').css("text-decoration", "line-through");
+    //disable click for yourself / strike through initial bid amount 
+    
+    if(username == oldUserName){
+      $('p span:contains(1)').next().prop('disabled',true);
+      $('p span:contains(1)').css("text-decoration", "line-through");
+    }
+    $('p span:contains(1)').next().prop('disabled', false);
+    $('p span:contains(1)').css("text-decoration", "");
+
+    oldUserName = username;
   }
 
   function disableInitBidAmt (bid_value) {
+    
     //disable click for yourself / strike through initial bid amount 
-    $('p span:contains(99)').next().prop('disabled',true);
-    $('p span:contains(99)').css("text-decoration", "line-through");
+    console.log('username', username);
+    console.log('oldUserName', oldUserName);
+
+    if(username == oldUserName){
+      $('p span:contains(1)').next().prop('disabled',true);
+      $('p span:contains(1)').css("text-decoration", "line-through");
+    }else{
+      $('p span:contains(1)').next().prop('disabled', false);
+      $('p span:contains(1)').css("text-decoration", "");
+    }
+
     // tell server to execute 'new message' and send along one parameter
     socket.emit('strike initial bid price', bid_value);
   }
@@ -493,6 +516,10 @@ $(function($) {
   socket.on('user joined', function (data) {
     log(data.username + ' joined');
     addParticpantBidders(data);
+  });
+
+  socket.on('old user', function (data) {
+    oldUserName = data.username;
   });
 
   // Whenever the server emits 'user left', log it in the chat body
